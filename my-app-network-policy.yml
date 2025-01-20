@@ -1,0 +1,26 @@
+#In this yml file, considering following as example.
+#namespace= my-app-namespace
+#app= my-app
+#app= trusted
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: my-app-network-policy
+  namespace: my-app-namespace
+spec:
+  podSelector:
+    matchLabels:
+      app: my-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector: {}  # Allow incoming traffic from all pods in the same namespace
+    - podSelector:
+        matchLabels:
+          app: trusted
+  egress:
+  - to:
+    - podSelector: {}  # Allow outgoing traffic to all pods in the same namespace
